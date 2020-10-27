@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import post from "axios";
 import { DiscordNotificationServiceError } from "./DiscordNotificationServiceError";
 import { ModVersion } from "./entities/ModVersion";
@@ -24,21 +25,33 @@ export class DiscordNotificationServiceClient {
    * @param version the released mod version.
    */
   public async sendModVersionReleaseNotification(version: ModVersion): Promise<void> {
-    const response = await post(this.apiBaseUrl + '/webhooks/mod/version', {
-      data: version,
-      auth: {
-          username: 'user',
-          password: this.token,
-      },
-      method: 'POST',
-    });
+    try {
+      await post(this.apiBaseUrl + '/webhooks/mod/version', {
+        data: version,
+        auth: {
+            username: 'user',
+            password: this.token,
+        },
+        method: 'POST',
+      });
+    } catch (error) {
+      handleAxiosError(error)
+    }
+  }
+}
 
-    if (response.status !== 200) {
-       if (response.data !== undefined && response.data.error !== undefined) {
-           throw new DiscordNotificationServiceError(response.status, response.data);
-       } else {
-           throw new DiscordNotificationServiceError(response.status);
-       }
+function handleAxiosError(error: any): void {
+  if (typeof error === 'object' && error.isAxiosError === true) {
+    let axiosError = error as AxiosError;
+
+    if (axiosError.response && axiosError.response?.status !== 200) {
+      if (axiosError.response.data !== undefined && axiosError.response.data.error !== undefined) {
+          throw new DiscordNotificationServiceError(axiosError.response.status, axiosError.response.data);
+      } else {
+          throw new DiscordNotificationServiceError(axiosError.response.status);
+      }
+    } else {
+      throw error;
     }
   }
 }

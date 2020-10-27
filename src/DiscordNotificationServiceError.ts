@@ -16,6 +16,7 @@ export class DiscordNotificationServiceError extends Error {
     } else {
         super(`${apiResponse.error}: ${apiResponse.message}`);
     }
+    this.name = 'DiscordNotificationServiceError';
     this.statusCode = statusCode;
   }
 
