@@ -1,0 +1,28 @@
+{
+  "name": "@raftmodding/discord-notification-client",
+  "version": "0.0.0",
+  "description": "Client for the Discord notification service.",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/raftmodding/discord-notification-client.git"
+  },
+  "keywords": [
+    "discord",
+    "notification",
+    "service",
+    "client"
+  ],
+  "author": "traxam",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitlab.com/raftmodding/discord-notification-client/issues"
+  },
+  "homepage": "https://gitlab.com/raftmodding/discord-notification-client#readme",
+  "devDependencies": {
+    "typescript": "^4.0.5"
+  }
+}
