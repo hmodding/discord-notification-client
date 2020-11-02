@@ -2,6 +2,8 @@ import { AxiosError } from "axios";
 import post from "axios";
 import { DiscordNotificationServiceError } from "./DiscordNotificationServiceError";
 import { ModVersion } from "./entities/ModVersion";
+import { LoaderVersion } from "./entities/LoaderVersion";
+import { LauncherVersion } from "./entities/LauncherVersion";
 
 /**
  * This client allows you to interact with a Discord notification service.
@@ -36,6 +38,44 @@ export class DiscordNotificationServiceClient {
       });
     } catch (error) {
       handleAxiosError(error)
+    }
+  }
+
+  /**
+   * Send a mod loader version release notification.
+   * @param version the released mod loader version.
+   */
+  public async sendLoaderVersionReleaseNotification(version: LoaderVersion): Promise<void> {
+    try {
+      await post(this.apiBaseUrl + '/webhooks/loader/version', {
+        data: version,
+        auth: {
+          username: 'user',
+          password: this.token,
+        },
+        method: 'POST',
+      });
+    } catch (error) {
+      handleAxiosError(error);
+    }
+  }
+
+  /**
+   * Send a launcher version release notification.
+   * @param version the released launcher version.
+   */
+  public async sendLauncherVersionReleaseNotification(version: LauncherVersion): Promise<void> {
+    try {
+      await post(this.apiBaseUrl + '/webhooks/launcher/version', {
+        data: version,
+        auth: {
+          username: 'user',
+          password: this.token,
+        },
+        method: 'POST',
+      });
+    } catch (error) {
+      handleAxiosError(error);
     }
   }
 }
